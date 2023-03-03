@@ -22,7 +22,7 @@ export default defineConfig({
       },
       // Using the proxy instance
       '/api': {
-        target: `http://127.0.0.1:3002`,
+        target: `http://127.0.0.1:3003`,
         changeOrigin: true,
         configure: (proxy, options) => {
           // proxy will be an instance of 'http-proxy'

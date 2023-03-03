@@ -179,7 +179,7 @@ export default defineComponent({
         const querying = ref(false)
         const MainSwapsDetails = ref({
             blocks: 300,
-            buyRatio: 0.5,
+            buyRatio: 0,
             volume: 1000,
             age: 0,
             totalBuys: 0,
@@ -188,7 +188,7 @@ export default defineComponent({
         const ContractDetails = ref({
             table: ContractsTable.m1,
             contract: "",
-            timespan: 0
+            timespan: 25
 
 
         })
@@ -197,13 +197,23 @@ export default defineComponent({
         function handleEnter () {
             return '';
         };
-        function handleSearch() {
+        async function handleSearch() {
             querying.value = true;
             setTimeout(()=>querying.value = false, 1000);
             if (selectedTable.value == 1) {
-                const query = `SELECT * from MainSwaps where `
+                data.value = await getMainSwaps();
+                //const query = `SELECT * from MainSwaps where `
             } else if (selectedTable.value == 2) {
 
+            }
+        }
+
+        async function getMainSwaps() {
+            try {
+                const response = await axios.get(`/api/swaps/grouped?blocks=${MainSwapsDetails.value.blocks}&buyRatio=${MainSwapsDetails.value.buyRatio}&marketCap=${MainSwapsDetails.value.marketCap}&totalBuys=${MainSwapsDetails.value.totalBuys}&volume=${MainSwapsDetails.value.volume}&age=${MainSwapsDetails.value.age}`)
+                return response.data.data;
+            } catch(e){
+                console.log(e)
             }
         }
 
